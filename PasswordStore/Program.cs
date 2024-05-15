@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection.PortableExecutable;
 using System.Text;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        List<PasswordEntry> passwordEntries = new List<PasswordEntry>();    
+        List<PasswordEntry> passwordEntries = new();    
         
         while (true)
         {
             Console.WriteLine("Escolha uma opção:");
-            Console.WriteLine("1. Gerar uma nova senha");
-            Console.WriteLine("2. Buscar uma senha");
-            Console.WriteLine("3. Sair");
+            Console.WriteLine("1- Gerar uma nova senha");
+            Console.WriteLine("2- Buscar uma senha");
+            Console.WriteLine("3- Remover senha salva");
+            Console.WriteLine("4- Sair");
             var option = Console.ReadLine();
 
             switch (option)
@@ -28,7 +26,12 @@ public class Program
                     SearchPassword(passwordEntries);
                     break;
 
-                case "3":
+                    case "3":
+                    RemovePassword(passwordEntries);
+                    break;
+
+                case "4":
+                    Console.WriteLine("Saindo do programa!");
                     return;
 
                 default:
@@ -50,24 +53,19 @@ public class Program
 
         Console.WriteLine("Incluir letras maiúsculas? (s/n): ");
         bool includeUpperCase = Console.ReadLine().ToLower() == "s";
-        Console.WriteLine(includeUpperCase);
 
         Console.WriteLine("Incluir letras minúsculas? (s/n): ");
         bool includeLowerCase = Console.ReadLine().ToLower() == "s";
-        Console.WriteLine(includeLowerCase);
-
 
         Console.WriteLine("Incluir carcteres especiais? (s/n): ");
         bool includeSpecialChars = Console.ReadLine().ToLower() == "s";
-        Console.WriteLine(includeSpecialChars);
 
         Console.WriteLine("Incluir números? (s/n): ");
         bool includeNumbers = Console.ReadLine().ToLower() == "s";
-        Console.WriteLine(includeNumbers);
 
 
         Console.WriteLine("Digite um nome para sua senha: ");
-        string namePass = Console.ReadLine();
+        string? namePass = Console.ReadLine();
 
         string password = GenerateRandomPassword(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
         passwordEntries.Add(new PasswordEntry(namePass, password));
@@ -78,7 +76,7 @@ public class Program
     private static void SearchPassword(List<PasswordEntry> passwordEntries)
     {
         Console.WriteLine("Digite o nome da senha que deseja buscar: ");
-        string name = Console.ReadLine();
+        string? name = Console.ReadLine();
 
         var entry = passwordEntries.FirstOrDefault(pe => pe.Name == name);
 
@@ -93,12 +91,13 @@ public class Program
 
     private static string GenerateRandomPassword(int lenght, bool includeUpperCase, bool includeLowerCase, bool includeNumbers, bool includeSpecialChars)
     {
+
         const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string lowercase = "abcdefghijklmnopqrstuvwxyz";
         const string numbers = "0123456789";
         const string specialChars = "!@#$%^&*()_-+=<>?";
 
-        StringBuilder characterPool = new StringBuilder();  
+        StringBuilder characterPool = new();  
 
         if(includeUpperCase == true)
         {
@@ -119,11 +118,11 @@ public class Program
 
         if(characterPool.Length == 0)
         {
-            throw new ArgumentException("Nenhuma categoria de caracteres selecionado!");
+            Console.WriteLine("Nenhuma categoria de caracteres selecionado!");
         }
 
-        StringBuilder password = new StringBuilder();
-        Random random = new Random();
+        StringBuilder password = new();
+        Random random = new();
 
         for (int i = 0; i < lenght; i++)
         {
@@ -132,6 +131,27 @@ public class Program
         }
 
         return password.ToString();
+    }
+
+
+
+
+    private static void RemovePassword(List<PasswordEntry> passwordEntries)
+    {
+        Console.WriteLine("Digite o nome da senha que deseja remover: ");
+        string? name = Console.ReadLine();
+
+        var entry = passwordEntries.FirstOrDefault(pe => pe.Name == name);
+
+        if(entry is not null)
+        {
+            passwordEntries.Remove(entry);
+        } else
+        {
+            Console.WriteLine("Não existe uma senha com esse nome");
+        }
+
+        Console.WriteLine("Senha removida com sucesso!");
     }
 
 }
@@ -147,3 +167,4 @@ public class PasswordEntry
         Password = password;
     }
 }
+
