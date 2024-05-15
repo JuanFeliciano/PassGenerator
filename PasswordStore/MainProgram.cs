@@ -9,6 +9,7 @@ public class MainProgram
         SearchPass searchpassword = new();
         GeneratePass generatepassword = new();
         RemovePass removepassword = new();
+        EditPass editpassword = new();
         List<PasswordEntry> passwordEntries = new();    
         
         while (true)
@@ -36,6 +37,7 @@ public class MainProgram
                     break;
 
                 case "4":
+                    editpassword.Generatepassword(passwordEntries);
                     break;
 
                 case "5":

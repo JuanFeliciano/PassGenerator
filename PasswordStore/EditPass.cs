@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 
 namespace PasswordStore
 {
-    internal class GeneratePass
+    internal class EditPass
     {
         public void Generatepassword(List<PasswordEntry> passwordEntries)
         {
+            Console.WriteLine("Digite o nome da senha que deseja alterar: ");
+            string? namePass = Console.ReadLine();
+
+            var entry = passwordEntries.FirstOrDefault(pe => pe.Name == namePass);
+            string nameEntry = entry.ToString();
+
             Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
             if (!int.TryParse(Console.ReadLine(), out int lenght) || lenght <= 0 || lenght > 50)
             {
                 switch(lenght)
                 {
-                    case <= 0: 
+                    case <= 0:
                         Console.WriteLine("Tamanho Inválido");
-                        break;
+                            break;
                     case > 50:
-                        Console.WriteLine("Tamanho não pode ser maior que 50");
-                        break;
+                            Console.WriteLine("Tamanho não pode ser maior que 50");
+                            break;
                 }
                 return;
             }
@@ -38,13 +44,26 @@ namespace PasswordStore
             bool includeNumbers = Console.ReadLine().ToLower() == "s" ? true : false;
 
 
-            Console.WriteLine("Digite um nome para sua senha: ");
-            string? namePass = Console.ReadLine();
-
             string password = GenerateRandomPassword(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
-            passwordEntries.Add(new PasswordEntry(namePass, password));
 
-            Console.WriteLine($"Senha Gerada: {password}");
+            Console.WriteLine("Deseja manter o nome atual da sua senha? (s/n): ");
+            bool nameEdited = Console.ReadLine().ToLower() == "s" ? true : false;
+
+            switch(nameEdited)
+            {
+                case false:
+                    passwordEntries.Remove(entry);
+                    Console.WriteLine("Digite o novo nome: ");
+                    string? newName = Console.ReadLine();
+                    passwordEntries.Add(new PasswordEntry(newName, password));
+                    break;
+                case true:
+                    passwordEntries.Remove(entry);
+                    passwordEntries.Add(new PasswordEntry(nameEntry, password));
+                    break;
+            }
+
+            Console.WriteLine($"Senha atualizada: {password}");
         }
 
 
@@ -93,3 +112,4 @@ namespace PasswordStore
         }
     }
 }
+
