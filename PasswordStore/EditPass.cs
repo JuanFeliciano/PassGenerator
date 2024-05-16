@@ -14,7 +14,7 @@ namespace PasswordStore
             string? namePass = Console.ReadLine();
 
             var entry = passwordEntries.FirstOrDefault(pe => pe.Name == namePass);
-            string nameEntry = entry.ToString();
+            string? nameEntry = entry!.ToString();
 
             Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
             if (!int.TryParse(Console.ReadLine(), out int lenght) || lenght <= 0 || lenght > 50)
@@ -32,22 +32,22 @@ namespace PasswordStore
             }
 
             Console.WriteLine("Incluir letras maiúsculas? (s/n): ");
-            bool includeUpperCase = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeUpperCase = Console.ReadLine()!.ToLower() == "s";
 
             Console.WriteLine("Incluir letras minúsculas? (s/n): ");
-            bool includeLowerCase = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeLowerCase = Console.ReadLine()!.ToLower() == "s";
 
             Console.WriteLine("Incluir caracteres especiais? (s/n): ");
-            bool includeSpecialChars = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeSpecialChars = Console.ReadLine()!.ToLower() == "s";
 
             Console.WriteLine("Incluir números? (s/n): ");
-            bool includeNumbers = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeNumbers = Console.ReadLine()!.ToLower() == "s";
 
 
             string password = GenerateRandomPassword(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
 
             Console.WriteLine("Deseja manter o nome atual da sua senha? (s/n): ");
-            bool nameEdited = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool nameEdited = Console.ReadLine()!.ToLower() == "s";
 
             switch(nameEdited)
             {
@@ -55,11 +55,11 @@ namespace PasswordStore
                     passwordEntries.Remove(entry);
                     Console.WriteLine("Digite o novo nome: ");
                     string? newName = Console.ReadLine();
-                    passwordEntries.Add(new PasswordEntry(newName, password));
+                    passwordEntries.Add(new PasswordEntry(newName!, password));
                     break;
                 case true:
                     passwordEntries.Remove(entry);
-                    passwordEntries.Add(new PasswordEntry(nameEntry, password));
+                    passwordEntries.Add(new PasswordEntry(nameEntry!, password));
                     break;
             }
 

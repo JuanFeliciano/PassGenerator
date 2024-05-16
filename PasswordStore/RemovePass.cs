@@ -18,13 +18,12 @@ namespace PasswordStore
             if (entry is not null)
             {
                 passwordEntries.Remove(entry);
+                Console.WriteLine("Senha removida com sucesso!");
             }
             else
             {
                 Console.WriteLine("Não existe uma senha com esse nome");
             }
-
-            Console.WriteLine("Senha removida com sucesso!");
         }
     }
 }
