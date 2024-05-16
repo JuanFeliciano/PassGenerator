@@ -26,23 +26,23 @@ namespace PasswordStore
             }
 
             Console.WriteLine("Incluir letras maiúsculas? (s/n): ");
-            bool includeUpperCase = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeUpperCase = Console.ReadLine()!.ToLower() == "s";
 
             Console.WriteLine("Incluir letras minúsculas? (s/n): ");
-            bool includeLowerCase = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeLowerCase = Console.ReadLine()!.ToLower() == "s";
 
             Console.WriteLine("Incluir caracteres especiais? (s/n): ");
-            bool includeSpecialChars = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeSpecialChars = Console.ReadLine()!.ToLower() == "s";
 
             Console.WriteLine("Incluir números? (s/n): ");
-            bool includeNumbers = Console.ReadLine().ToLower() == "s" ? true : false;
+            bool includeNumbers = Console.ReadLine()!.ToLower() == "s";
 
 
             Console.WriteLine("Digite um nome para sua senha: ");
             string? namePass = Console.ReadLine();
 
             string password = GenerateRandomPassword(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
-            passwordEntries.Add(new PasswordEntry(namePass, password));
+            passwordEntries.Add(new PasswordEntry(namePass!, password));
 
             Console.WriteLine($"Senha Gerada: {password}");
         }

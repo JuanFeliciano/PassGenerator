@@ -13,11 +13,21 @@ namespace PasswordStore
             Console.WriteLine("Digite o nome da senha que deseja buscar: ");
             string? name = Console.ReadLine();
 
-            var entry = passwordEntries.FirstOrDefault(pe => pe.Name == name);
-
-            if (entry != null)
+            if(string.IsNullOrEmpty(name))
             {
-                Console.WriteLine($"Senha encontrada: {entry.Password}");
+                Console.WriteLine("Forneça algum valor para busca!");
+                return;
+            }
+
+            var matchingEntries = passwordEntries.Where(pe => pe.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+
+            if (matchingEntries.Any())
+            {
+                foreach(var entry in matchingEntries)
+                {
+
+                Console.WriteLine($"Senha encontrada: {entry.Name} = {entry.Password}");
+                }
             }
             else
             {
