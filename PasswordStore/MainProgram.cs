@@ -11,7 +11,7 @@ namespace PasswordStore
             GeneratePass generatepassword = new();
             RemovePass removepassword = new();
             EditPass editpassword = new();
-            GetAll catchAllElements = new();
+            CatchAll catchAllElements = new();
             List<PasswordEntry> passwordEntries = new();
 
 
@@ -50,7 +50,7 @@ namespace PasswordStore
 
                     case "5":
                         Console.Clear();
-                        catchAllElements.SearchPass(passwordEntries);
+                        catchAllElements.TakeElements(passwordEntries);
                         break;
                             
                     case "6":
