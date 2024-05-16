@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PasswordStore.SubFunction;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,28 @@ namespace PasswordStore
     {
         public void Generatepassword(List<PasswordEntry> passwordEntries)
         {
+            GenerateRandomPassword generaterandom = new();
+            string? nameEntry = null;
+
+
             Console.WriteLine("Digite o nome da senha que deseja alterar: ");
             string? namePass = Console.ReadLine();
 
-            var entry = passwordEntries.FirstOrDefault(pe => pe.Name == namePass);
-            string? nameEntry = entry!.ToString();
+            if(string.IsNullOrEmpty(namePass))
+            {
+                Console.WriteLine("Senha inválida ou inexistente!");
+                return;
+            }
+
+            var entry = passwordEntries.Find(pe => pe.Name == namePass);
+            if (entry == null)
+            {
+                Console.WriteLine("Senha inválida ou inexistente!");
+                return;
+            }else
+            {
+                    nameEntry = entry.ToString();
+            }
 
             Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
             if (!int.TryParse(Console.ReadLine(), out int lenght) || lenght <= 0 || lenght > 50)
@@ -22,13 +40,12 @@ namespace PasswordStore
                 switch(lenght)
                 {
                     case <= 0:
-                        Console.WriteLine("Tamanho Inválido");
-                            break;
+                        Console.WriteLine("Digite um número maior que 0 e menor que 51");
+                        return;
                     case > 50:
-                            Console.WriteLine("Tamanho não pode ser maior que 50");
-                            break;
+                        Console.WriteLine("Tamanho não pode ser maior que 50");
+                        return;
                 }
-                return;
             }
 
             Console.WriteLine("Incluir letras maiúsculas? (s/n): ");
@@ -44,7 +61,7 @@ namespace PasswordStore
             bool includeNumbers = Console.ReadLine()!.ToLower() == "s";
 
 
-            string password = GenerateRandomPassword(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
+            string password = generaterandom.GenerateRP(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
 
             Console.WriteLine("Deseja manter o nome atual da sua senha? (s/n): ");
             bool nameEdited = Console.ReadLine()!.ToLower() == "s";
@@ -56,59 +73,14 @@ namespace PasswordStore
                     Console.WriteLine("Digite o novo nome: ");
                     string? newName = Console.ReadLine();
                     passwordEntries.Add(new PasswordEntry(newName!, password));
+                    Console.WriteLine($"Senha atualizada: [Nome: {newName}][Senha: {password}]");
                     break;
                 case true:
                     passwordEntries.Remove(entry);
-                    passwordEntries.Add(new PasswordEntry(nameEntry!, password));
+                    passwordEntries.Add(new PasswordEntry(namePass, password));
+                    Console.WriteLine($"Senha atualizada: {password}");
                     break;
             }
-
-            Console.WriteLine($"Senha atualizada: {password}");
-        }
-
-
-        private static string GenerateRandomPassword(int lenght, bool includeUpperCase, bool includeLowerCase, bool includeSpecialChars, bool includeNumbers)
-        {
-
-            const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const string lowercase = "abcdefghijklmnopqrstuvwxyz";
-            const string numbers = "0123456789";
-            const string specialChars = "!@#$%^&*()_-+=<>?";
-
-            StringBuilder characterPool = new();
-
-            if (includeUpperCase == true)
-            {
-                characterPool.Append(uppercase);
-            }
-            if (includeLowerCase == true)
-            {
-                characterPool.Append(lowercase);
-            }
-            if (includeSpecialChars == true)
-            {
-                characterPool.Append(specialChars);
-            }
-            if (includeNumbers == true)
-            {
-                characterPool.Append(numbers);
-            }
-
-            if (characterPool.Length == 0)
-            {
-                Console.WriteLine("Nenhuma categoria de caracteres selecionado!");
-            }
-
-            StringBuilder password = new();
-            Random random = new();
-
-            for (int i = 0; i < lenght; i++)
-            {
-                int index = random.Next(characterPool.Length);
-                password.Append(characterPool[index]);
-            }
-
-            return password.ToString();
         }
     }
 }
