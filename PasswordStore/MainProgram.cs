@@ -7,24 +7,26 @@ namespace PasswordStore
     {
         public static void Main()
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             SearchPass searchpassword = new();
             GeneratePass generatepassword = new();
             RemovePass removepassword = new();
             EditPass editpassword = new();
-            CatchAll catchAllElements = new();
+            CatchAll takeelements = new();
             List<PasswordEntry> passwordEntries = new();
 
 
             while (true)
             {
+                Console.WriteLine("");
                 Console.WriteLine("Escolha uma opção:");
-                Console.WriteLine("1- Gerar uma nova senha");
-                Console.WriteLine("2- Buscar uma senha (nome)");
-                Console.WriteLine("3- Remover senha salva");
-                Console.WriteLine("4- Editar");
-                Console.WriteLine("5- Buscar todas as senhas");
-                Console.WriteLine("6- Sair");
-                var option = Console.ReadLine();
+                Console.WriteLine("1- Gerar uma nova senha;");
+                Console.WriteLine("2- Buscar uma senha;");
+                Console.WriteLine("3- Remover senha salva;");
+                Console.WriteLine("4- Editar senha;");
+                Console.WriteLine("5- Buscar todas as senhas;");
+                Console.WriteLine("6- Sair;");
+                var option = Console.ReadLine()!.Trim();
 
                 switch (option)
                 {
@@ -50,16 +52,19 @@ namespace PasswordStore
 
                     case "5":
                         Console.Clear();
-                        catchAllElements.TakeElements(passwordEntries);
+                        takeelements.TakeElements(passwordEntries);
                         break;
                             
                     case "6":
                         Console.Clear();
-                        Console.WriteLine("Saindo do programa!");
+                        Console.Write("Saindo do programa");
                         return;
 
                     default:
-                        Console.WriteLine("Opção Inválida");
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Opção inválida");
+                        Console.ForegroundColor = ConsoleColor.Red;
                         break;
 
                 }

@@ -11,7 +11,7 @@ namespace PasswordStore
         public void RemovePassword(List<PasswordEntry> passwordEntries)
         {
             Console.WriteLine("Digite o nome da senha que deseja remover: ");
-            string? name = Console.ReadLine();
+            string? name = Console.ReadLine()!.Trim();
 
             var entry = passwordEntries.FirstOrDefault(pe => pe.Name == name);
 

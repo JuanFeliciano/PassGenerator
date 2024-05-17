@@ -11,7 +11,7 @@ namespace PasswordStore
         public void Searchpassword(List<PasswordEntry> passwordEntries)
         {
             Console.WriteLine("Digite o nome da senha que deseja buscar: ");
-            string? name = Console.ReadLine();
+            string? name = Console.ReadLine()!.Trim();
 
             if(string.IsNullOrEmpty(name))
             {

@@ -11,6 +11,7 @@ namespace PasswordStore.SubFunction
         public string GenerateRP(int lenght, bool includeUpperCase, bool includeLowerCase, bool includeSpecialChars, bool includeNumbers)
         {
 
+
             const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const string lowercase = "abcdefghijklmnopqrstuvwxyz";
             const string numbers = "0123456789";
