@@ -19,7 +19,9 @@ namespace PasswordStore
             while (true)
             {
                 Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Escolha uma opção:");
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("1- Gerar uma nova senha;");
                 Console.WriteLine("2- Buscar uma senha;");
                 Console.WriteLine("3- Remover senha salva;");

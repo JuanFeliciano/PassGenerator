@@ -65,14 +65,16 @@ namespace PasswordStore
 
                 if (namePass == "")
                 {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Digite um valor válido;");
-                    return;
+                    Console.ForegroundColor = ConsoleColor.Red;
                 }
                 else
                 {
-                    var existName = passwordEntries.Where(pe => pe.Name.Contains(namePass!, StringComparison.OrdinalIgnoreCase));
+                    var existName = passwordEntries.Any(pe => pe.Name.Equals(namePass!, StringComparison.OrdinalIgnoreCase));
 
-                    if (existName.Any())
+                    if (existName)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Já existe uma senha com este nome, por favor escolha outro: ");
