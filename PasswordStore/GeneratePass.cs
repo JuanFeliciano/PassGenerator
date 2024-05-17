@@ -13,42 +13,82 @@ namespace PasswordStore
         {
             GenerateRandomPassword generaterandom = new();
 
-
             Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
-            if (!int.TryParse(Console.ReadLine(), out int lenght) || lenght <= 0 || lenght > 50)
+            Console.ForegroundColor = ConsoleColor.White;
+            if (!int.TryParse(Console.ReadLine()!.Trim(), out int lenght) || lenght <= 0 || lenght > 50)
             {
                 switch(lenght)
                 {
-                    case <= 0: 
+                    case <= 0:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Tamanho Inválido");
+                        Console.ForegroundColor = ConsoleColor.Red;
                         break;
                     case > 50:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Tamanho não pode ser maior que 50");
+                        Console.ForegroundColor = ConsoleColor.Red;
                         break;
                 }
                 return;
             }
+            Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine("Incluir letras maiúsculas? (s/n): ");
-            bool includeUpperCase = Console.ReadLine()!.ToLower() == "s";
+            Console.ForegroundColor = ConsoleColor.White;
+            bool includeUpperCase = Console.ReadLine()!.ToLower().Trim() == "s";
+            Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine("Incluir letras minúsculas? (s/n): ");
-            bool includeLowerCase = Console.ReadLine()!.ToLower() == "s";
+            Console.ForegroundColor = ConsoleColor.White;
+            bool includeLowerCase = Console.ReadLine()!.ToLower().Trim() == "s";
+            Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine("Incluir caracteres especiais? (s/n): ");
-            bool includeSpecialChars = Console.ReadLine()!.ToLower() == "s";
+            Console.ForegroundColor = ConsoleColor.White;
+            bool includeSpecialChars = Console.ReadLine()!.ToLower().Trim() == "s";
+            Console.ForegroundColor = ConsoleColor.Red;
 
             Console.WriteLine("Incluir números? (s/n): ");
-            bool includeNumbers = Console.ReadLine()!.ToLower() == "s";
+            Console.ForegroundColor = ConsoleColor.White;
+            bool includeNumbers = Console.ReadLine()!.ToLower().Trim() == "s";
+            Console.ForegroundColor = ConsoleColor.Red;
 
+            var a = true;
 
-            Console.WriteLine("Digite um nome para sua senha: ");
-            string? namePass = Console.ReadLine();
+            while(a)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Digite um nome para sua senha: ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                string? namePass = Console.ReadLine()!.Trim();
 
-            string password = generaterandom.GenerateRP(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
-            passwordEntries.Add(new PasswordEntry(namePass!, password));
+                if (namePass == "")
+                {
+                    Console.WriteLine("Digite um valor válido;");
+                    return;
+                }
+                else
+                {
+                    var existName = passwordEntries.Where(pe => pe.Name.Contains(namePass!, StringComparison.OrdinalIgnoreCase));
 
-            Console.WriteLine($"Senha Gerada: {password}");
+                    if (existName.Any())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Já existe uma senha com este nome, por favor escolha outro: ");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    else
+                    {
+                        string password = generaterandom.GenerateRP(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
+                        passwordEntries.Add(new PasswordEntry(namePass!, password));
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"Senha Gerada: {password}");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        a = false;
+                    }
+                }
+            }
         }
     }
 }
