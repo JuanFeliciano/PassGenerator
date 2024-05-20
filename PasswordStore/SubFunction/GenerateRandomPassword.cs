@@ -19,19 +19,19 @@ namespace PasswordStore.SubFunction
 
             StringBuilder characterPool = new();
 
-            if (includeUpperCase == true)
+            if (includeUpperCase)
             {
                 characterPool.Append(uppercase);
             }
-            if (includeLowerCase == true)
+            if (includeLowerCase)
             {
                 characterPool.Append(lowercase);
             }
-            if (includeSpecialChars == true)
+            if (includeSpecialChars)
             {
                 characterPool.Append(specialChars);
             }
-            if (includeNumbers == true)
+            if (includeNumbers)
             {
                 characterPool.Append(numbers);
             }
@@ -54,3 +54,4 @@ namespace PasswordStore.SubFunction
         }
     }
 }
+

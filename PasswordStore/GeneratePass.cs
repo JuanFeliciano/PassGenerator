@@ -13,6 +13,7 @@ namespace PasswordStore
         {
             GenerateRandomPassword generaterandom = new();
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
             Console.ForegroundColor = ConsoleColor.White;
             if (!int.TryParse(Console.ReadLine()!.Trim(), out int lenght) || lenght <= 0 || lenght > 50)
@@ -58,9 +59,9 @@ namespace PasswordStore
 
             while(a)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Digite um nome para sua senha: ");
                 Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Digite um nome para sua senha: ");
+                Console.ForegroundColor = ConsoleColor.White;
                 string? namePass = Console.ReadLine()!.Trim();
 
                 if (namePass == "")

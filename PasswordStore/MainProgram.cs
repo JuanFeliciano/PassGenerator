@@ -28,6 +28,7 @@ namespace PasswordStore
                 Console.WriteLine("4- Editar senha;");
                 Console.WriteLine("5- Buscar todas as senhas;");
                 Console.WriteLine("6- Sair;");
+                Console.ForegroundColor = ConsoleColor.White;
                 var option = Console.ReadLine()!.Trim();
 
                 switch (option)

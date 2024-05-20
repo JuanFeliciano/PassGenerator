@@ -13,7 +13,7 @@ namespace PasswordStore
         {
             if (passwordEntries.Count != 0)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Green;
                 foreach (var entry in passwordEntries)
                 Console.WriteLine($"Nome: {entry.Name} - Senha: {entry.Password}");
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -22,7 +22,7 @@ namespace PasswordStore
             else
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Senha inválida ou inexistente;");
+                Console.WriteLine("Senha inexistente;");
                 Console.ForegroundColor = ConsoleColor.Red;
 
             }

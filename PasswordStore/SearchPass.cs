@@ -10,11 +10,14 @@ namespace PasswordStore
     { 
         public void Searchpassword(List<PasswordEntry> passwordEntries)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Digite o nome da senha que deseja buscar: ");
+            Console.ForegroundColor = ConsoleColor.White;
             string? name = Console.ReadLine()!.Trim();
 
             if(string.IsNullOrEmpty(name))
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Forneça algum valor para busca!");
                 return;
             }
@@ -25,13 +28,15 @@ namespace PasswordStore
             {
                 foreach(var entry in matchingEntries)
                 {
-
-                Console.WriteLine($"Senha encontrada: {entry.Name} = {entry.Password}");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Senha encontrada: {entry.Name} = {entry.Password}");
                 }
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Nenhuma senha foi encontrada!");
+                Console.ForegroundColor = ConsoleColor.Red;
             }
         }
     }
