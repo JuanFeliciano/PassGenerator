@@ -1,5 +1,7 @@
-﻿using System.Reflection.PortableExecutable;
+﻿using PasswordStore.SubFunction;
+using System.Reflection.PortableExecutable;
 using System.Text;
+using static PasswordStore.GeneratePass;
 
 namespace PasswordStore
 {
@@ -9,7 +11,9 @@ namespace PasswordStore
         {
             Console.ForegroundColor = ConsoleColor.Red;
             SearchPass searchpassword = new();
-            GeneratePass generatepassword = new();
+            GenerateRandomPassword passwordGenerator = new GenerateRandomPassword();
+            IUserInput userInput = new UserInput();
+            GeneratePass generatepassword = new(passwordGenerator, userInput);
             RemovePass removepassword = new();
             EditPass editpassword = new();
             CatchAll takeelements = new();
@@ -34,7 +38,7 @@ namespace PasswordStore
                 {
                     case "1":
                         Console.Clear();
-                        generatepassword.Generatepassword(passwordEntries);
+                        generatepassword.GeneratePassword(passwordEntries);
                         break;
 
                     case "2":

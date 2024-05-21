@@ -71,7 +71,7 @@ namespace PasswordStore
             bool includeNumbers = Console.ReadLine()!.ToLower().Trim() == "s";
 
 
-            string password = generaterandom.GenerateRP(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
+            string password = generaterandom.Generate(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
 
             Console.WriteLine("Deseja manter o nome atual da sua senha? (s/n): ");
             bool nameEdited = Console.ReadLine()!.ToLower().Trim() == "s";

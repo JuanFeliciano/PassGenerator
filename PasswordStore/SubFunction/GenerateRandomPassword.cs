@@ -2,47 +2,64 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PasswordStore.SubFunction
 {
     internal class GenerateRandomPassword
     {
-        public string GenerateRP(int lenght, bool includeUpperCase, bool includeLowerCase, bool includeSpecialChars, bool includeNumbers)
+        private const string Uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private const string Lowercase = "abcdefghijklmnopqrstuvwxyz";
+        private const string Numbers = "0123456789";
+        private const string SpecialChars = "!@#$%^&*()_-+=<>?";
+
+        public string Generate(int lenght, bool includeUpperCase, bool includeLowerCase, bool includeSpecialChars, bool includeNumbers)
         {
-
-
-            const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const string lowercase = "abcdefghijklmnopqrstuvwxyz";
-            const string numbers = "0123456789";
-            const string specialChars = "!@#$%^&*()_-+=<>?";
-
-            StringBuilder characterPool = new();
-
-            if (includeUpperCase == true)
+            if (lenght <= 0)
             {
-                characterPool.Append(uppercase);
-            }
-            if (includeLowerCase == true)
-            {
-                characterPool.Append(lowercase);
-            }
-            if (includeSpecialChars == true)
-            {
-                characterPool.Append(specialChars);
-            }
-            if (includeNumbers == true)
-            {
-                characterPool.Append(numbers);
+                throw new ArgumentException("O tamanho da senha deve ser maior do que zero!");
             }
 
-            if (characterPool.Length == 0)
+            var characterPool = BuildCharacterPool(includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
+
+
+            if (characterPool.Length == 0 )
             {
-                Console.WriteLine("Nenhuma categoria de caracteres selecionado!");
+                throw new ArgumentException("Nenhuma categoria de caracteres foi selecionada!");
             }
 
-            StringBuilder password = new();
-            Random random = new();
+            return GeneratePassword(lenght, characterPool);
+        }
+
+        private StringBuilder BuildCharacterPool(bool includeUpperCase, bool includeLowerCase, bool includeSpecialChars, bool includeNumbers)
+        {
+            var characterPool = new StringBuilder();
+
+            if (includeUpperCase)
+            {
+                characterPool.Append(Uppercase);
+            }
+            if (includeLowerCase)
+            {
+                characterPool.Append(Lowercase);
+            }
+            if (includeSpecialChars)
+            {
+                characterPool.Append(SpecialChars);
+            }
+            if (includeNumbers)
+            {
+                characterPool.Append(Numbers);
+            }
+
+            return characterPool;
+        }   
+
+        private string GeneratePassword(int lenght, StringBuilder characterPool)
+        {
+            var password = new StringBuilder();
+            var random = new Random();
 
             for (int i = 0; i < lenght; i++)
             {

@@ -1,96 +1,101 @@
 ﻿using PasswordStore.SubFunction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PasswordStore
 {
     internal class GeneratePass
     {
-        public void Generatepassword(List<PasswordEntry> passwordEntries)
+        private readonly GenerateRandomPassword _passwordGenerator;
+        private readonly IUserInput _userInput;
+        
+        public GeneratePass(GenerateRandomPassword passwordGenerator, IUserInput userInput)
         {
-            GenerateRandomPassword generaterandom = new();
+            _passwordGenerator = passwordGenerator;
+            _userInput = userInput;
+        }
 
-            Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
-            Console.ForegroundColor = ConsoleColor.White;
-            if (!int.TryParse(Console.ReadLine()!.Trim(), out int lenght) || lenght <= 0 || lenght > 50)
+
+        public void GeneratePassword(List<PasswordEntry> passwordEntries)
+        {
+            int lenght = _userInput.GetPasswordLenght();
+
+            if (lenght == -1) return;
+
+            bool includeUpperCase = _userInput.GetYesOrNoInput("Incluir letras maiúsculas? (s/n): ");
+            bool includeLowerCase = _userInput.GetYesOrNoInput("Incluir letras minúsculas? (s/n): ");
+            bool includeSpecialChars = _userInput.GetYesOrNoInput("Incluir caracteres especiais? (s/n): ");
+            bool includeNumbers = _userInput.GetYesOrNoInput("Incluir números? (s/n): ");
+
+            while(true)
             {
-                switch(lenght)
+                string namePass = _userInput.GetPasswordName();
+                if (namePass == string.Empty) continue;
+
+                if(passwordEntries.Any(pe => pe.Name.Equals(namePass, StringComparison.OrdinalIgnoreCase)))
                 {
-                    case <= 0:
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Tamanho Inválido");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        break;
-                    case > 50:
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Tamanho não pode ser maior que 50");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        break;
+                    _userInput.ShowMessage("Já existe uma senha com o mesmo nome, por favor digite outro: ", ConsoleColor.Yellow);
                 }
-                return;
+                else
+                {
+                    string password = _passwordGenerator.Generate(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
+                    passwordEntries.Add(new PasswordEntry(namePass, password));
+                    _userInput.ShowMessage($"Senha Gerada: {password}", ConsoleColor.Green);
+                    break;
+                }
             }
-            Console.ForegroundColor = ConsoleColor.Red;
+        }
 
-            Console.WriteLine("Incluir letras maiúsculas? (s/n): ");
-            Console.ForegroundColor = ConsoleColor.White;
-            bool includeUpperCase = Console.ReadLine()!.ToLower().Trim() == "s";
-            Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine("Incluir letras minúsculas? (s/n): ");
-            Console.ForegroundColor = ConsoleColor.White;
-            bool includeLowerCase = Console.ReadLine()!.ToLower().Trim() == "s";
-            Console.ForegroundColor = ConsoleColor.Red;
+        public interface IUserInput
+        {
+            int GetPasswordLenght();
+            bool GetYesOrNoInput(string message);
+            string GetPasswordName();
+            void ShowMessage(string message, ConsoleColor color);
+        }
 
-            Console.WriteLine("Incluir caracteres especiais? (s/n): ");
-            Console.ForegroundColor = ConsoleColor.White;
-            bool includeSpecialChars = Console.ReadLine()!.ToLower().Trim() == "s";
-            Console.ForegroundColor = ConsoleColor.Red;
+        public class UserInput : IUserInput
+        {
+            public int GetPasswordLenght()
+            {
+                Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
+                Console.ForegroundColor = ConsoleColor.White;
+                if (!int.TryParse(Console.ReadLine()!.Trim(), out int length) || length <= 0 || length > 50)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(length <= 0 ? "Tamanho Inválido" : "Tamanho não pode ser maior que 50");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    return -1;
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                return length;
+            }
 
-            Console.WriteLine("Incluir números? (s/n): ");
-            Console.ForegroundColor = ConsoleColor.White;
-            bool includeNumbers = Console.ReadLine()!.ToLower().Trim() == "s";
-            Console.ForegroundColor = ConsoleColor.Red;
+            public bool GetYesOrNoInput(string message)
+            {
+                Console.WriteLine(message);
+                Console.ForegroundColor = ConsoleColor.White;
+                bool result = Console.ReadLine()!.Trim() == "s";
+                Console.ForegroundColor = ConsoleColor.Red;
 
-            var a = true;
+                return result;
+            }
 
-            while(a)
+            public string GetPasswordName()
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Digite um nome para sua senha: ");
                 Console.ForegroundColor = ConsoleColor.Red;
-                string? namePass = Console.ReadLine()!.Trim();
 
-                if (namePass == "")
-                {
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Digite um valor válido;");
-                    Console.ForegroundColor = ConsoleColor.Red;
-                }
-                else
-                {
-                    var existName = passwordEntries.Any(pe => pe.Name.Equals(namePass!, StringComparison.OrdinalIgnoreCase));
+                return Console.ReadLine()!.Trim();
+            }
 
-                    if (existName)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Já existe uma senha com este nome, por favor escolha outro: ");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    else
-                    {
-                        string password = generaterandom.GenerateRP(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
-                        passwordEntries.Add(new PasswordEntry(namePass!, password));
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Senha Gerada: {password}");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        a = false;
-                    }
-                }
+            public void ShowMessage(string message, ConsoleColor color)
+            {
+                Console.ForegroundColor = color;
+                Console.WriteLine(message);
+                Console.ForegroundColor = ConsoleColor.Red;
             }
         }
+
     }
 }
