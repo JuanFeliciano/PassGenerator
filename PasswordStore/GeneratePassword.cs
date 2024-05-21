@@ -2,19 +2,19 @@
 
 namespace PasswordStore
 {
-    internal class GeneratePass
+    internal class GeneratePassword
     {
-        private readonly GenerateRandomPassword _passwordGenerator;
+        private readonly GenerateRandom _passwordGenerator;
         private readonly IUserInput _userInput;
         
-        public GeneratePass(GenerateRandomPassword passwordGenerator, IUserInput userInput)
+        public GeneratePassword(GenerateRandom passwordGenerator, IUserInput userInput)
         {
             _passwordGenerator = passwordGenerator;
             _userInput = userInput;
         }
 
 
-        public void GeneratePassword(List<PasswordEntry> passwordEntries)
+        public void Generate(List<PasswordEntry> passwordEntries)
         {
             int lenght = _userInput.GetPasswordLenght();
 
@@ -30,7 +30,7 @@ namespace PasswordStore
                 string namePass = _userInput.GetPasswordName();
                 if (namePass == string.Empty) continue;
 
-                if(passwordEntries.Any(pe => pe.Name.Equals(namePass, StringComparison.OrdinalIgnoreCase)))
+                if(passwordEntries.Any(pe => pe.Name.Equals(namePass)))
                 {
                     _userInput.ShowMessage("Já existe uma senha com o mesmo nome, por favor digite outro: ", ConsoleColor.Yellow);
                 }
@@ -57,34 +57,33 @@ namespace PasswordStore
         {
             public int GetPasswordLenght()
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
                 Console.ForegroundColor = ConsoleColor.White;
                 if (!int.TryParse(Console.ReadLine()!.Trim(), out int length) || length <= 0 || length > 50)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine(length <= 0 ? "Tamanho Inválido" : "Tamanho não pode ser maior que 50");
-                    Console.ForegroundColor = ConsoleColor.Red;
                     return -1;
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
                 return length;
             }
 
             public bool GetYesOrNoInput(string message)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(message);
                 Console.ForegroundColor = ConsoleColor.White;
-                bool result = Console.ReadLine()!.Trim() == "s";
-                Console.ForegroundColor = ConsoleColor.Red;
+                bool result = Console.ReadLine()!.ToLower().Trim() == "s";
 
                 return result;
             }
 
             public string GetPasswordName()
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Digite um nome para sua senha: ");
                 Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Digite um nome para sua senha: ");
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return Console.ReadLine()!.Trim();
             }

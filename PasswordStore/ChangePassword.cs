@@ -7,23 +7,34 @@ using System.Threading.Tasks;
 
 namespace PasswordStore
 {
-    internal class EditPass
+    internal class ChangePassword
     {
-        public void Generatepassword(List<PasswordEntry> passwordEntries)
+        public void EditPassword(List<PasswordEntry> passwordEntries)
         {
-            GenerateRandomPassword generaterandom = new();
+            ChangeName changename = new();
+            GenerateRandom generaterandom = new();
             string? nameEntry = null;
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Digite o nome da senha que deseja alterar: ");
             Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Você deseja alterar o nome ou o valor da sua senha? [N = NOME / V = VALOR] \n (Obs => Qualquer valor digitado diferente de 'N' será considerado como 'V')");
+            Console.ForegroundColor = ConsoleColor.White;
+            bool option = Console.ReadLine()!.ToUpper().Trim() == "NO";
+
+            if(option)
+            {
+                changename.NamePassword(passwordEntries);
+                return;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Digite o nome da senha que desseja alterar o valor: ");
+            Console.ForegroundColor = ConsoleColor.White;
             string? namePass = Console.ReadLine()!.Trim();
 
             if(string.IsNullOrEmpty(namePass))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Senha inválida ou inexistente;");
-                Console.ForegroundColor = ConsoleColor.Red;
                 return;
             }
 
@@ -32,14 +43,14 @@ namespace PasswordStore
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Senha inválida ou inexistente;");
-                Console.ForegroundColor = ConsoleColor.Red;
                 return;
             }else
             {
                     nameEntry = entry.ToString();
             }
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Digite o tamanho desejado para sua senha (Tamanho MAX = 50): ");
+            Console.ForegroundColor = ConsoleColor.White;
             if (!int.TryParse(Console.ReadLine()!.Trim(), out int lenght) || lenght <= 0 || lenght > 50)
             {
                 switch(lenght)
@@ -47,50 +58,41 @@ namespace PasswordStore
                     case <= 0:
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Tamanho inválido;");
-                        Console.ForegroundColor = ConsoleColor.Red;
                         return;
                     case > 50:
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Tamanho inválido;");
-                        Console.ForegroundColor = ConsoleColor.Red;
                         return;
                 }
             }
             Console.ForegroundColor = ConsoleColor.Red;
-
             Console.WriteLine("Incluir letras maiúsculas? (s/n): ");
+            Console.ForegroundColor = ConsoleColor.White;
             bool includeUpperCase = Console.ReadLine()!.ToLower().Trim() == "s";
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Incluir letras minúsculas? (s/n): ");
+            Console.ForegroundColor = ConsoleColor.White;
             bool includeLowerCase = Console.ReadLine()!.ToLower().Trim() == "s";
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Incluir caracteres especiais? (s/n): ");
+            Console.ForegroundColor = ConsoleColor.White;
             bool includeSpecialChars = Console.ReadLine()!.ToLower().Trim() == "s";
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Incluir números? (s/n): ");
+            Console.ForegroundColor = ConsoleColor.White;
             bool includeNumbers = Console.ReadLine()!.ToLower().Trim() == "s";
 
 
             string password = generaterandom.Generate(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
+            
+            passwordEntries.Remove(entry);
+            passwordEntries.Add(new PasswordEntry(namePass, password));
 
-            Console.WriteLine("Deseja manter o nome atual da sua senha? (s/n): ");
-            bool nameEdited = Console.ReadLine()!.ToLower().Trim() == "s";
-
-            switch(nameEdited)
-            {
-                case false:
-                    passwordEntries.Remove(entry);
-                    Console.WriteLine("Digite o novo nome: ");
-                    string? newName = Console.ReadLine()!.Trim();
-                    passwordEntries.Add(new PasswordEntry(newName!, password));
-                    Console.WriteLine($"Senha atualizada: [Nome: {newName}][Senha: {password}]");
-                    break;
-                case true:
-                    passwordEntries.Remove(entry);
-                    passwordEntries.Add(new PasswordEntry(namePass, password));
-                    Console.WriteLine($"Senha atualizada: {password}");
-                    break;
-            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Senha atualizada: {password}");
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PasswordStore.SubFunction
 {
-    internal class GenerateRandomPassword
+    internal class GenerateRandom
     {
         private const string Uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string Lowercase = "abcdefghijklmnopqrstuvwxyz";
@@ -18,6 +18,7 @@ namespace PasswordStore.SubFunction
         {
             if (lenght <= 0)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 throw new ArgumentException("O tamanho da senha deve ser maior do que zero!");
             }
 
@@ -26,6 +27,7 @@ namespace PasswordStore.SubFunction
 
             if (characterPool.Length == 0 )
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 throw new ArgumentException("Nenhuma categoria de caracteres foi selecionada!");
             }
 
