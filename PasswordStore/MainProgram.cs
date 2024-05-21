@@ -1,5 +1,7 @@
-﻿using System.Reflection.PortableExecutable;
+﻿using PasswordStore.SubFunction;
+using System.Reflection.PortableExecutable;
 using System.Text;
+using static PasswordStore.GeneratePassword;
 
 namespace PasswordStore
 {
@@ -8,33 +10,28 @@ namespace PasswordStore
         public static void Main()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            SearchPass searchpassword = new();
-            GeneratePass generatepassword = new();
-            RemovePass removepassword = new();
-            EditPass editpassword = new();
-            CatchAll takeelements = new();
+
+            IUserInput userInput = new UserInput();
+            SearchPassword searchpassword = new();
+            GenerateRandom passwordGenerator = new();
+            GeneratePassword generatepassword = new(passwordGenerator, userInput);
+            RemovePassword removepassword = new();
+            ChangePassword editpassword = new();
+            CatchPassword takeelements = new();
             List<PasswordEntry> passwordEntries = new();
 
 
             while (true)
             {
-                Console.WriteLine("");
+                ShowMenu();
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Escolha uma opção:");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("1- Gerar uma nova senha;");
-                Console.WriteLine("2- Buscar uma senha;");
-                Console.WriteLine("3- Remover senha salva;");
-                Console.WriteLine("4- Editar senha;");
-                Console.WriteLine("5- Buscar todas as senhas;");
-                Console.WriteLine("6- Sair;");
                 var option = Console.ReadLine()!.Trim();
 
                 switch (option)
                 {
                     case "1":
                         Console.Clear();
-                        generatepassword.Generatepassword(passwordEntries);
+                        generatepassword.Generate(passwordEntries);
                         break;
 
                     case "2":
@@ -44,21 +41,22 @@ namespace PasswordStore
 
                     case "3":
                         Console.Clear();
-                        removepassword.RemovePassword(passwordEntries);
+                        removepassword.DeletePassword(passwordEntries);
                         break;
 
                     case "4":
                         Console.Clear();
-                        editpassword.Generatepassword(passwordEntries);
+                        editpassword.EditPassword(passwordEntries);
                         break;
 
                     case "5":
                         Console.Clear();
-                        takeelements.TakeElements(passwordEntries);
+                        takeelements.PickPassword(passwordEntries);
                         break;
                             
                     case "6":
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write("Saindo do programa");
                         return;
 
@@ -66,11 +64,23 @@ namespace PasswordStore
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Opção inválida");
-                        Console.ForegroundColor = ConsoleColor.Red;
                         break;
 
                 }
             }
+        }
+        private static void ShowMenu()
+        {
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Escolha uma opção:");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("1- Gerar uma nova senha;");
+            Console.WriteLine("2- Buscar uma senha;");
+            Console.WriteLine("3- Remover senha salva;");
+            Console.WriteLine("4- Editar senha;");
+            Console.WriteLine("5- Buscar todas as senhas;");
+            Console.WriteLine("6- Sair;");
         }
     }
 
