@@ -1,5 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-using System.Text;
+﻿using PasswordStore.SubFunction;
 
 namespace PasswordStore
 {
@@ -8,26 +7,19 @@ namespace PasswordStore
         public static void Main()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            SearchPass searchpassword = new();
-            GeneratePass generatepassword = new();
-            RemovePass removepassword = new();
-            EditPass editpassword = new();
-            CatchAll takeelements = new();
-            List<PasswordEntry> passwordEntries = new();
+
+            IUserInput userInput = new UserInput();
+            SearchPassword searchpassword = new();
+            GenerateRandom passwordGenerator = new();
+            GeneratePassword generatepassword = new(passwordGenerator, userInput);
+            RemovePassword removepassword = new();
+            ChangePassword editpassword = new();
+            CatchPassword takeelements = new();
 
 
             while (true)
             {
-                Console.WriteLine("");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Escolha uma opção:");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("1- Gerar uma nova senha;");
-                Console.WriteLine("2- Buscar uma senha;");
-                Console.WriteLine("3- Remover senha salva;");
-                Console.WriteLine("4- Editar senha;");
-                Console.WriteLine("5- Buscar todas as senhas;");
-                Console.WriteLine("6- Sair;");
+                ShowMenu();
                 Console.ForegroundColor = ConsoleColor.White;
                 var option = Console.ReadLine()!.Trim();
 
@@ -35,31 +27,32 @@ namespace PasswordStore
                 {
                     case "1":
                         Console.Clear();
-                        generatepassword.Generatepassword(passwordEntries);
+                        generatepassword.Generate();
                         break;
 
                     case "2":
                         Console.Clear();
-                        searchpassword.Searchpassword(passwordEntries);
+                        searchpassword.Searchpassword();
                         break;
 
                     case "3":
                         Console.Clear();
-                        removepassword.RemovePassword(passwordEntries);
+                        removepassword.DeletePassword();
                         break;
 
                     case "4":
                         Console.Clear();
-                        editpassword.Generatepassword(passwordEntries);
+                        editpassword.EditPassword();
                         break;
 
                     case "5":
                         Console.Clear();
-                        takeelements.TakeElements(passwordEntries);
+                        takeelements.PickPassword();
                         break;
-                            
+
                     case "6":
                         Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write("Saindo do programa");
                         return;
 
@@ -67,23 +60,23 @@ namespace PasswordStore
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Opção inválida");
-                        Console.ForegroundColor = ConsoleColor.Red;
                         break;
 
                 }
             }
         }
-    }
-
-    public class PasswordEntry
-    {
-        public string Name { get; }
-        public string Password { get; }
-
-        public PasswordEntry(string name, string password)
+        private static void ShowMenu()
         {
-            Name = name;
-            Password = password;
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Escolha uma opção:");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("1- Gerar uma nova senha;");
+            Console.WriteLine("2- Buscar uma senha;");
+            Console.WriteLine("3- Remover senha salva;");
+            Console.WriteLine("4- Editar senha;");
+            Console.WriteLine("5- Buscar todas as senhas;");
+            Console.WriteLine("6- Sair;");
         }
     }
 }

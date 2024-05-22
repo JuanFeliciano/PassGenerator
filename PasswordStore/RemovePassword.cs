@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PasswordStore
+﻿namespace PasswordStore
 {
-    internal class RemovePass
+    internal class RemovePassword
     {
-        public void RemovePassword(List<PasswordEntry> passwordEntries)
+        public void DeletePassword()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Digite o nome da senha que deseja remover: ");
             Console.ForegroundColor = ConsoleColor.White;
             string? name = Console.ReadLine()!.Trim();
 
-            var entry = passwordEntries.Find(pe => pe.Name == name);
+            var entry = PasswordEntry.passwordEntries.Find(pe => pe.Name.Equals(name));
 
             if (entry is not null)
             {
-                passwordEntries.Remove(entry);
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                PasswordEntry.passwordEntries.Remove(entry);
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Senha removida com sucesso!");
             }
             else
