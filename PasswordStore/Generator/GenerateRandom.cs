@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace PasswordStore.SubFunction
+namespace PasswordStore.Generator
 {
     internal class GenerateRandom
     {
@@ -20,7 +20,7 @@ namespace PasswordStore.SubFunction
             var characterPool = BuildCharacterPool(includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
 
 
-            if (characterPool.Length == 0 )
+            if (characterPool.Length == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 throw new ArgumentException("Nenhuma categoria de caracteres foi selecionada!");
@@ -51,7 +51,7 @@ namespace PasswordStore.SubFunction
             }
 
             return characterPool;
-        }   
+        }
 
         private string GeneratePassword(int lenght, StringBuilder characterPool)
         {

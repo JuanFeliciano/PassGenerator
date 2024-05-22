@@ -1,4 +1,6 @@
-﻿using PasswordStore.SubFunction;
+﻿
+
+using PasswordStore.Generator;
 
 namespace PasswordStore.EditChange
 {
@@ -6,9 +8,8 @@ namespace PasswordStore.EditChange
     {
         public void ChangePassword()
         {
-            GenerateRandom generaterandom = new();
             string? nameEntry = null;
-
+            GenerateRandom generaterandom = new();
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Digite o nome da senha que deseja alterar o valor: ");
