@@ -1,6 +1,4 @@
-﻿
-
-using PasswordStore.Generator;
+﻿using PasswordStore.Generator;
 
 namespace PasswordStore.EditChange
 {

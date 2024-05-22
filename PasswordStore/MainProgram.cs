@@ -1,4 +1,4 @@
-﻿using PasswordStore.SubFunction;
+﻿using PasswordStore.Generator;
 
 namespace PasswordStore
 {
@@ -49,7 +49,7 @@ namespace PasswordStore
                         Console.Clear();
                         takeelements.PickPassword();
                         break;
-
+                            
                     case "6":
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Green;

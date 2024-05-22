@@ -1,4 +1,4 @@
-﻿using PasswordStore.SubFunction;
+﻿using PasswordStore.Generator;
 
 namespace PasswordStore
 {
@@ -6,7 +6,7 @@ namespace PasswordStore
     {
         private readonly GenerateRandom _passwordGenerator;
         private readonly IUserInput _userInput;
-
+        
         public GeneratePassword(GenerateRandom passwordGenerator, IUserInput userInput)
         {
             _passwordGenerator = passwordGenerator;
@@ -25,12 +25,12 @@ namespace PasswordStore
             bool includeSpecialChars = _userInput.GetYesOrNoInput("Incluir caracteres especiais? (s/n): ");
             bool includeNumbers = _userInput.GetYesOrNoInput("Incluir números? (s/n): ");
 
-            while (true)
+            while(true)
             {
                 string namePass = _userInput.GetPasswordName();
                 if (namePass == string.Empty) continue;
 
-                if (PasswordEntry.passwordEntries.Any(pe => pe.Name.Equals(namePass)))
+                if(PasswordEntry.passwordEntries.Any(pe => pe.Name.Equals(namePass)))
                 {
                     _userInput.ShowMessage("Já existe uma senha com o mesmo nome, por favor digite outro: ", ConsoleColor.Yellow);
                 }
