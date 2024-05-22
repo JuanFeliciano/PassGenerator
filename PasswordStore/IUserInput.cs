@@ -8,5 +8,9 @@ namespace PasswordStore
 {
     internal interface IUserInput
     {
+        int GetPasswordLenght();
+        bool GetYesOrNoInput(string message);
+        string GetPasswordName();
+        void ShowMessage(string message, ConsoleColor color);
     }
 }

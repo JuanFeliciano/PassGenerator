@@ -15,7 +15,6 @@ namespace PasswordStore
             RemovePassword removepassword = new();
             ChangePassword editpassword = new();
             CatchPassword takeelements = new();
-            List<PasswordEntry> passwordEntries = new();
 
 
             while (true)

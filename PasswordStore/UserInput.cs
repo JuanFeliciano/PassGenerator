@@ -24,10 +24,25 @@ namespace PasswordStore
 
         public bool GetYesOrNoInput(string message)
         {
+            bool result = true;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.White;
-            bool result = Console.ReadLine()!.ToLower().Trim() == "s";
+            string option = Console.ReadLine()!.ToLower().Trim();
+
+            switch(option)
+            {
+                case "s":
+                    result = true; 
+                    break;
+                case "n":
+                    result = false; 
+                    break;
+                default:
+                    Console.WriteLine("Escolha uma opção válida: ");
+                    break;
+
+            }
 
             return result;
         }
