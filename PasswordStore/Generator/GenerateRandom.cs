@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace PasswordStore.SubFunction
+namespace PasswordStore.Generator
 {
     internal class GenerateRandom
     {
