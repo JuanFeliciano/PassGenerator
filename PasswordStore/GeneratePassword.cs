@@ -14,7 +14,7 @@ namespace PasswordStore
         }
 
 
-        public void Generate(List<PasswordEntry> passwordEntries)
+        public void Generate()
         {
             int lenght = _userInput.GetPasswordLenght();
 
@@ -30,14 +30,14 @@ namespace PasswordStore
                 string namePass = _userInput.GetPasswordName();
                 if (namePass == string.Empty) continue;
 
-                if(passwordEntries.Any(pe => pe.Name.Equals(namePass)))
+                if(PasswordEntry.passwordEntries.Any(pe => pe.Name.Equals(namePass)))
                 {
                     _userInput.ShowMessage("Já existe uma senha com o mesmo nome, por favor digite outro: ", ConsoleColor.Yellow);
                 }
                 else
                 {
                     string password = _passwordGenerator.Generate(lenght, includeUpperCase, includeLowerCase, includeSpecialChars, includeNumbers);
-                    passwordEntries.Add(new PasswordEntry(namePass, password));
+                    PasswordEntry.passwordEntries.Add(new PasswordEntry(namePass, password));
                     _userInput.ShowMessage($"Senha Gerada: {password}", ConsoleColor.Green);
                     break;
                 }

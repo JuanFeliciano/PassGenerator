@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace PasswordStore
 {
     internal class SearchPassword
     { 
-        public void Searchpassword(List<PasswordEntry> passwordEntries)
+        public void Searchpassword()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Digite o nome da senha que deseja buscar: ");
@@ -22,7 +19,7 @@ namespace PasswordStore
                 return;
             }
 
-            var matchingEntries = passwordEntries.Where(pe => pe.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+            var matchingEntries = PasswordEntry.passwordEntries.Where(pe => pe.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
 
             if (matchingEntries.Any())
             {

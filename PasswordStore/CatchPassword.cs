@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PasswordStore
+﻿namespace PasswordStore
 {
     internal class CatchPassword
     {
-        public void PickPassword(List<PasswordEntry> passwordEntries)
+        public void PickPassword()
         {
-            if (passwordEntries.Count != 0)
+            if (PasswordEntry.passwordEntries.Count != 0)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                foreach (var entry in passwordEntries)
+                foreach (var entry in PasswordEntry.passwordEntries)
                 Console.WriteLine($"Nome: {entry.Name} - Senha: {entry.Password}");
                 Console.ForegroundColor = ConsoleColor.Red;
 

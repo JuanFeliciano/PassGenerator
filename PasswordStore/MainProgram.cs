@@ -1,7 +1,4 @@
 ﻿using PasswordStore.SubFunction;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using static PasswordStore.GeneratePassword;
 
 namespace PasswordStore
 {
@@ -31,27 +28,27 @@ namespace PasswordStore
                 {
                     case "1":
                         Console.Clear();
-                        generatepassword.Generate(passwordEntries);
+                        generatepassword.Generate();
                         break;
 
                     case "2":
                         Console.Clear();
-                        searchpassword.Searchpassword(passwordEntries);
+                        searchpassword.Searchpassword();
                         break;
 
                     case "3":
                         Console.Clear();
-                        removepassword.DeletePassword(passwordEntries);
+                        removepassword.DeletePassword();
                         break;
 
                     case "4":
                         Console.Clear();
-                        editpassword.EditPassword(passwordEntries);
+                        editpassword.EditPassword();
                         break;
 
                     case "5":
                         Console.Clear();
-                        takeelements.PickPassword(passwordEntries);
+                        takeelements.PickPassword();
                         break;
                             
                     case "6":
@@ -81,18 +78,6 @@ namespace PasswordStore
             Console.WriteLine("4- Editar senha;");
             Console.WriteLine("5- Buscar todas as senhas;");
             Console.WriteLine("6- Sair;");
-        }
-    }
-
-    public class PasswordEntry
-    {
-        public string Name { get; }
-        public string Password { get; }
-
-        public PasswordEntry(string name, string password)
-        {
-            Name = name;
-            Password = password;
         }
     }
 }
